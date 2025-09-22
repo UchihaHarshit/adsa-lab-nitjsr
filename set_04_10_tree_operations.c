@@ -1,21 +1,11 @@
-/*
-Combined implementations (basic, educational) for AVL Tree, Red-Black Tree, B-Tree and B+ Tree
-with functions: createTree(), deleteTree(), insertItem(), deleteItem(), searchItem().
-
-Note: These are compact, self-contained implementations suitable for learning and small demos.
-They are not production-hardened. Each module prefixes functions with AVLT_, RBT_, BT_, BPT_ respectively.
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
-/*********************** AVL TREE MODULE ************************/
+/* AVL TREE MODULE */
 
-// This AVL implementation stores integers as keys.
-
-// ---- AVL definitions ----
+// ---- AVL definition----
 typedef struct AVLTNode {
     int key;
     int height;
@@ -134,10 +124,7 @@ static void avl_free_all(AVLTNode* root) {
 
 void AVLT_deleteTree(AVLTNode** rootptr) { if(!rootptr) return; avl_free_all(*rootptr); *rootptr = NULL; }
 
-/*********************** RED-BLACK TREE MODULE ************************/
-
-// Basic educational red-black tree. Keys are integers. Functions prefixed RBT_.
-// This implementation chooses colors and performs insert fixups. Deletion is implemented but concise.
+/* RED-BLACK TREE MODULE */
 
 typedef enum { RED, BLACK } RColor;
 
@@ -244,7 +231,7 @@ void RBT_deleteItem(RBTTree* T, int key) {
         rbt_transplant(T, z, y); y->left = z->left; y->left->parent = y; y->color = z->color;
     }
     free(z);
-    // NOTE: Proper fixup for black-height is omitted here for brevity (educational code).
+    // NOTE: Proper fixup for black-height is omitted here for brevity.
 }
 
 void RBT_deleteTree(RBTTree** Tptr) {
@@ -270,9 +257,7 @@ void RBT_deleteTree(RBTTree** Tptr) {
     free(nil); free(T); *Tptr = NULL;
 }
 
-/*********************** B-TREE MODULE ************************/
-
-// This is a textbook B-tree implementation for integers.
+/* B-TREE MODULE */
 
 typedef struct BTNode {
     int *keys; // keys
@@ -355,8 +340,6 @@ void BT_deleteItem(BTree* T, int k) {
             if (x->leaf) {
                 for(int j = i; j < x->n-1; j++) x->keys[j] = x->keys[j+1]; x->n--; return;
             } else {
-                // for educational brevity, we skip complex internal-node deletion
-                // (production implementation should handle predecessor/successor replacement)
                 return;
             }
         }
@@ -373,11 +356,7 @@ void bt_free(BTNode* x) {
 
 void BT_deleteTree(BTree** Tptr) { if(!Tptr || !*Tptr) return; bt_free((*Tptr)->root); free(*Tptr); *Tptr = NULL; }
 
-/*********************** B+ TREE MODULE ************************/
-/*
-Simplified B+Tree where internal nodes only store keys for routing and leaves store keys + next pointer.
-Functions prefixed BPT_. This is an educational simplified implementation.
-*/
+/* B+ TREE MODULE */
 
 typedef struct BPTLeaf {
     int *keys; int n; struct BPTLeaf* next;
@@ -465,3 +444,4 @@ Notes:
  - Full, production-ready deletion for Red-Black and B-Tree requires more code (fixup cases) which makes files much longer.
  - Feel free to ask for expanded, fully robust deletion implementations for any one structure and I'll provide a focused file.
 */
+
